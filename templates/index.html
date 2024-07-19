@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Todo App</title>
+</head>
+<body>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h1>Todo List</h1>
+        <form action="{{ url_for('add_todo') }}" method="post" class="add-form">
+            <input type="text" name="task" placeholder="Enter new task" class="input-task">
+            <button type="submit" class="btn-add">Add Task</button>
+        </form>
+        <ul class="todo-list">
+            {% for todo in todos %}
+                <li>
+                    <span class="todo-task">{{ todo[1] }}</span>
+                    <form action="{{ url_for('delete_todo', id=todo[0]) }}" method="post">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html
